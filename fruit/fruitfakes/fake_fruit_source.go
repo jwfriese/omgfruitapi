@@ -2,26 +2,25 @@
 package fruitfakes
 
 import (
-	"io"
 	"sync"
 
 	"github.com/jwfriese/omgfruitapi/fruit"
 )
 
 type FakeFruitSource struct {
-	GetNextFruitStub        func() (string, string, io.Reader)
+	GetNextFruitStub        func() (string, string, string)
 	getNextFruitMutex       sync.RWMutex
 	getNextFruitArgsForCall []struct{}
 	getNextFruitReturns     struct {
 		result1 string
 		result2 string
-		result3 io.Reader
+		result3 string
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeFruitSource) GetNextFruit() (string, string, io.Reader) {
+func (fake *FakeFruitSource) GetNextFruit() (string, string, string) {
 	fake.getNextFruitMutex.Lock()
 	fake.getNextFruitArgsForCall = append(fake.getNextFruitArgsForCall, struct{}{})
 	fake.recordInvocation("GetNextFruit", []interface{}{})
@@ -39,12 +38,12 @@ func (fake *FakeFruitSource) GetNextFruitCallCount() int {
 	return len(fake.getNextFruitArgsForCall)
 }
 
-func (fake *FakeFruitSource) GetNextFruitReturns(result1 string, result2 string, result3 io.Reader) {
+func (fake *FakeFruitSource) GetNextFruitReturns(result1 string, result2 string, result3 string) {
 	fake.GetNextFruitStub = nil
 	fake.getNextFruitReturns = struct {
 		result1 string
 		result2 string
-		result3 io.Reader
+		result3 string
 	}{result1, result2, result3}
 }
 

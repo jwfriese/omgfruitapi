@@ -1,9 +1,7 @@
 package fruit_test
 
 import (
-	"bytes"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -47,9 +45,8 @@ var _ = Describe("/fruit", func() {
 		)
 
 		BeforeEach(func() {
-			fakeFruitSource.GetNextFruitStub = func() (string, string, io.Reader) {
-				imageData := bytes.NewBuffer([]byte(`image-data`))
-				return "turtle fruit", "it's a fruit like a turtle", imageData
+			fakeFruitSource.GetNextFruitStub = func() (string, string, string) {
+				return "turtle fruit", "it's a fruit like a turtle", "image-data"
 			}
 
 			url := fmt.Sprintf("%v/%v", baseURL, "/fruit")

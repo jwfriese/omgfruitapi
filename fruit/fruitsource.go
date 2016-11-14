@@ -1,15 +1,15 @@
 package fruit
 
 import (
-	"bytes"
-	"io"
-	"io/ioutil"
+	"bufio"
+	"encoding/base64"
 	"log"
+	"os"
 	"path/filepath"
 )
 
 type FruitSource interface {
-	GetNextFruit() (string, string, io.Reader)
+	GetNextFruit() (string, string, string)
 }
 
 func NewFruitSource(fruitFileNames []string) FruitSource {
@@ -38,7 +38,7 @@ type fruitSource struct {
 	fruitFileNames    []string
 }
 
-func (s *fruitSource) GetNextFruit() (string, string, io.Reader) {
+func (s *fruitSource) GetNextFruit() (string, string, string) {
 	index := s.callCount % 4
 	s.callCount += 1
 	fruitRelativeFilePath := s.fruitFileNames[index]
@@ -47,14 +47,20 @@ func (s *fruitSource) GetNextFruit() (string, string, io.Reader) {
 		log.Fatal(filePathErr)
 	}
 
-	fruitFileBytes, err := ioutil.ReadFile(fruitFilePath)
+	fruitFile, err := os.Open(fruitFilePath)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fruitImageDataReader := bytes.NewBuffer(fruitFileBytes)
+	fruitFileInfo, _ := fruitFile.Stat()
+	var size int64 = fruitFileInfo.Size()
+	fruitFileBase64Bytes := make([]byte, size)
+	fruitFileReader := bufio.NewReader(fruitFile)
+	fruitFileReader.Read(fruitFileBase64Bytes)
+
+	fruitFileBase64EncodedString := base64.StdEncoding.EncodeToString(fruitFileBase64Bytes)
 
 	fruitName := s.fruitNames[index]
 	fruitDescription := s.fruitDescriptions[index]
-	return fruitName, fruitDescription, fruitImageDataReader
+	return fruitName, fruitDescription, fruitFileBase64EncodedString
 }
