@@ -2,7 +2,6 @@ package fruit
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -21,19 +20,15 @@ type fruitHandler struct {
 type fruit struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	Image       string `json:"image"`
+	Base64Image string `json:"image"`
 }
 
 func (h *fruitHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	fruitName, fruitDescription, fruitImageReader := h.fruitSource.GetNextFruit()
-	fruitImage, readErr := ioutil.ReadAll(fruitImageReader)
-	if readErr != nil {
-		log.Fatal(readErr)
-	}
+	fruitName, fruitDescription, fruitImageBase64DataString := h.fruitSource.GetNextFruit()
 	fruit := &fruit{
 		Name:        fruitName,
 		Description: fruitDescription,
-		Image:       string(fruitImage),
+		Base64Image: fruitImageBase64DataString,
 	}
 
 	fruitBytes, jsonErr := json.Marshal(fruit)
