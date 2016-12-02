@@ -1,0 +1,11 @@
+platform: linux
+
+inputs:
+- name: omgfruitapi
+
+run:
+  path: bash
+  args:
+    - "-c"
+    - "cd omgfruitapi && ginkgo -r"
+
