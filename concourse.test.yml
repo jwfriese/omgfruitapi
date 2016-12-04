@@ -10,6 +10,9 @@ inputs:
 - name: omgfruitapi
   path: go/src/github.com/jwfriese/omgfruitapi
 
+outputs:
+- name: new-release
+
 run:
   path: go/src/github.com/jwfriese/omgfruitapi/test.sh
 
