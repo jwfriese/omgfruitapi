@@ -2,16 +2,19 @@
 
 set -e
 
-go build $GOPATH/src/github.com/jwfriese/omgfruitapi/main.go
-mv main new-release/release-binary
+ls
+ls /
+OUTPUT_DIR=$(pwd)/new-release
+echo $OUTPUT_DIR
 
-CURRENT=$(git tag --sort="-refname" | head -1)
-NEXT="$(($CURRENT+1))"
+cd $GOPATH/src/github.com/jwfriese/omgfruitapi
 
-echo "$NEXT" > new-release/name
-echo "$NEXT" > new-release/tag
-echo "Version $NEXT" > new-release/body
+go build main.go
+mv main $OUTPUT_DIR/release-binary
 
-git tag -m "Version $NEXT" $NEXT
-git push --tags
+NEXT=$(cat /proc/sys/kernel/random/uuid)
+
+echo "$NEXT" > $OUTPUT_DIR/name
+echo "$NEXT" > $OUTPUT_DIR/tag
+echo "Version $NEXT" > $OUTPUT_DIR/body
 

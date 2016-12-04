@@ -11,4 +11,4 @@ go get github.com/gorilla/mux
 
 ginkgo $GOPATH/src/github.com/jwfriese/omgfruitapi/fruit
 
-./release.sh
+$GOPATH/src/github.com/jwfriese/omgfruitapi/release.sh
