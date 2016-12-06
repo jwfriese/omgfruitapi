@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -e -x
 
 OUTPUT_DIR=$(pwd)/new-release
 echo $OUTPUT_DIR
@@ -13,8 +13,7 @@ git config --global user.email "jared.friese@gmail.com"
 go build main.go
 mv main $OUTPUT_DIR/release-binary
 
-CURRENT=$(git tag --sort="-refname" | head -1)
-NEXT="$(($CURRENT + 1))"
+NEXT=$(date +%s)
 
 echo "$NEXT" > $OUTPUT_DIR/name
 echo "$NEXT" > $OUTPUT_DIR/tag
