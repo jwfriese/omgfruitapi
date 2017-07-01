@@ -10,8 +10,7 @@ run:
   path: go/src/github.com/jwfriese/omgfruitapi/test.sh
 
 inputs:
-- name: omgfruitapi-master
-  path: go/src/github.com/jwfriese/omgfruitapi
+- name: omgfruitapi
 
 outputs:
 - name: new-release
